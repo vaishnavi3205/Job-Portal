@@ -1,0 +1,72 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R /F2 6 0 R >> >> >>
+endobj
+4 0 obj
+<< /Length 1726 >>
+stream
+BT
+/F2 20 Tf
+50 740 Td (VAISHNAVI SHARMA) Tj
+/F1 11 Tf
+0 -20 Td (Full Stack & Frontend Developer | Computer Science Undergraduate) Tj
+0 -16 Td (Email: student@example.com  |  Phone: +91 9876543210  |  Delhi, India) Tj
+0 -14 Td (GitHub: github.com/vaishnavisharma  |  LinkedIn: linkedin.com/in/vaishnavisharma) Tj
+/F2 13 Tf
+0 -30 Td (EDUCATION) Tj
+/F1 10 Tf
+0 -16 Td (Delhi Technological University (DTU) - B.Tech in Computer Science & Engineering) Tj
+0 -14 Td (Graduation: 2025  |  CGPA: 8.9 / 10.0) Tj
+/F2 13 Tf
+0 -28 Td (TECHNICAL SKILLS) Tj
+/F1 10 Tf
+0 -16 Td (Frontend: React.js, Next.js, TypeScript, JavaScript (ES6+), Tailwind CSS, Redux Toolkit) Tj
+0 -14 Td (Backend: Node.js, Express.js, RESTful APIs, JWT Authentication, Microservices) Tj
+0 -14 Td (Databases & Tools: MongoDB, Mongoose, PostgreSQL, Git, GitHub, Postman, Docker) Tj
+/F2 13 Tf
+0 -28 Td (PROJECTS) Tj
+/F2 11 Tf
+0 -16 Td (CareerLaunch Job Portal & Candidate Platform) Tj
+/F1 10 Tf
+0 -14 Td (- Architected responsive portal connecting students and recruiters with real-time tracking) Tj
+0 -12 Td (- Built RESTful API endpoints for applications, job filtering, and saved bookmarks) Tj
+0 -12 Td (- Engineered interactive candidate profile dashboard with dynamic resume viewer) Tj
+/F2 11 Tf
+0 -18 Td (Fintech Checkout & Analytics Dashboard) Tj
+/F1 10 Tf
+0 -14 Td (- Designed high-concurrency payment tracking widgets with responsive chart visualizations) Tj
+0 -12 Td (- Implemented state management using Redux Toolkit for zero latency state sync) Tj
+/F2 13 Tf
+0 -28 Td (CERTIFICATIONS & HONORS) Tj
+/F1 10 Tf
+0 -16 Td (- 1st Place Winner - Inter-University Web Development Hackathon (2024)) Tj
+0 -14 Td (- Certified Advanced React & Node.js Specialist) Tj
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+6 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>
+endobj
+xref
+0 7
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000251 00000 n 
+0000002029 00000 n 
+0000002099 00000 n 
+trailer
+<< /Size 7 /Root 1 0 R >>
+startxref
+2174
+%%EOF

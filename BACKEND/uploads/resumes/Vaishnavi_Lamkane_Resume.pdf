@@ -1,0 +1,77 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R /F2 6 0 R >> >> >>
+endobj
+4 0 obj
+<< /Length 2011 >>
+stream
+BT
+/F2 20 Tf
+50 740 Td (VAISHNAVI LAMKANE) Tj
+/F1 11 Tf
+0 -20 Td (Computer Science & Engineering Student  |  SVERI College of Engineering) Tj
+0 -16 Td (Email: vaishnavi@gmail.com  |  Phone: +91 8263030980) Tj
+0 -14 Td (GitHub: https://github.com/vaishnavi3205  |  LinkedIn: linkedin.com/in/vaishnavi-lamkane) Tj
+/F2 13 Tf
+0 -30 Td (CAREER SUMMARY) Tj
+/F1 10 Tf
+0 -16 Td (Passionate and driven CSE undergraduate with hands-on experience in modern frontend and full-stack) Tj
+0 -13 Td (web development. Proven ability to build responsive, accessible, and fast web applications.) Tj
+/F2 13 Tf
+0 -28 Td (EDUCATION) Tj
+/F1 10 Tf
+0 -16 Td (SVERI College of Engineering - B.Tech in Computer Science and Engineering) Tj
+0 -14 Td (Graduation Year: 2027  |  Cumulative CGPA: 9.0 / 10.0) Tj
+/F2 13 Tf
+0 -28 Td (TECHNICAL SKILLS) Tj
+/F1 10 Tf
+0 -16 Td (Frontend: React.js, JavaScript, HTML5, CSS3, Tailwind CSS, Responsive Design) Tj
+0 -14 Td (Backend & Databases: Node.js, Express.js, REST APIs, MongoDB, Mongoose) Tj
+0 -14 Td (Developer Tools: Git, GitHub, VS Code, Postman, npm) Tj
+/F2 13 Tf
+0 -28 Td (PROJECTS) Tj
+/F2 11 Tf
+0 -16 Td (Interactive Career & Job Portal Platform) Tj
+/F1 10 Tf
+0 -14 Td (- Engineered interactive student profile hub featuring application status tracking and resume viewer) Tj
+0 -12 Td (- Built recruiter dashboard for job post management, applicant evaluation, and status decision flows) Tj
+0 -12 Td (- Connected frontend to live REST backend with MongoDB Atlas database) Tj
+/F2 11 Tf
+0 -18 Td (Frontend Web Portfolio & Interactive Applications) Tj
+/F1 10 Tf
+0 -14 Td (- Developed modern responsive user interfaces with reusable React components and Tailwind CSS) Tj
+0 -12 Td (- Optimized Core Web Vitals and component lifecycle state with Redux Toolkit) Tj
+/F2 13 Tf
+0 -28 Td (ACHIEVEMENTS & EXTRACURRICULAR) Tj
+/F1 10 Tf
+0 -16 Td (- Active open source contributor on GitHub (github.com/vaishnavi3205)) Tj
+0 -14 Td (- Academic excellence in Department of Computer Science (CGPA: 9.0)) Tj
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+6 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>
+endobj
+xref
+0 7
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000251 00000 n 
+0000002314 00000 n 
+0000002384 00000 n 
+trailer
+<< /Size 7 /Root 1 0 R >>
+startxref
+2459
+%%EOF
