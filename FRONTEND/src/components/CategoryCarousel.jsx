@@ -10,7 +10,7 @@ const category = [
     "Backend Developer",
     "Data Science",
     "Graphic Designer",
-    "FullStack Developer"
+    "Full Stack Developer"
 ]
 
 const CategoryCarousel = () => {
@@ -19,7 +19,7 @@ const CategoryCarousel = () => {
 
     const searchJobHandler = (cat) => {
         dispatch(setSearchedQuery(cat));
-        navigate("/browse");
+        navigate("/jobs");
     };
 
     return (

@@ -17,7 +17,7 @@ const Dialog = ({ open, onOpenChange, children }) => {
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
+    <div className="fixed inset-0 z-[99999] flex items-center justify-center">
       {React.Children.map(children, child => {
         if (React.isValidElement(child)) {
           return React.cloneElement(child, { onOpenChange });
@@ -51,7 +51,7 @@ const DialogOverlay = React.forwardRef(({ className, onOpenChange, ...props }, r
     ref={ref}
     onClick={() => onOpenChange?.(false)}
     className={cn(
-      "fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+      "fixed inset-0 z-[99999] bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
       className
     )}
     {...props}
@@ -69,12 +69,12 @@ const DialogContent = React.forwardRef(({ className, children, onOpenChange, onI
           onInteractOutside();
         }
       }}
-      className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center p-4"
+      className="fixed inset-0 z-[99999] flex items-center justify-center p-4 overflow-y-auto"
     >
       <div
         className={cn(
-          "relative z-50 grid w-full max-w-lg gap-4 border bg-white p-6 shadow-lg duration-200 sm:rounded-lg",
-          "animate-in fade-in-0 zoom-in-95 slide-in-from-left-1/2 slide-in-from-top-[48%]",
+          "relative z-[99999] grid w-full max-w-lg gap-4 border border-slate-200 bg-white p-6 shadow-2xl duration-200 sm:rounded-2xl my-auto",
+          "animate-in fade-in-0 zoom-in-95",
           className
         )}
         onClick={(e) => e.stopPropagation()}

@@ -1,22 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from './ui/button';
-import { Bookmark, BookmarkCheck } from 'lucide-react';
+import { Bookmark, BookmarkCheck, Loader2 } from 'lucide-react';
 import { Avatar, AvatarImage } from './ui/avatar';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { toggleSaveJob } from '@/redux/jobSlice';
+import { toggleSaveJob, setAllAppliedJobs } from '@/redux/jobSlice';
 import { toast } from 'sonner';
 import axios from 'axios';
-import { USER_API_END_POINT } from '@/utils/constants';
+import { USER_API_END_POINT, APPLICATION_API_END_POINT } from '@/utils/constants';
 
 const Job = ({ job }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { savedJobs, allAppliedJobs } = useSelector(store => store.job);
-
     const { user } = useSelector(store => store.auth);
+    const [isApplying, setIsApplying] = useState(false);
+
     const isSaved = savedJobs?.includes(job?._id);
-    const isApplied = allAppliedJobs?.some(app => app?.job?._id === job?._id);
+    const isApplied = allAppliedJobs?.some(app => app?.job?._id === job?._id || app?.job === job?._id);
 
     const daysAgoFunction = (mongodbTime) => {
         if (!mongodbTime) return "Recent";
@@ -40,6 +41,55 @@ const Job = ({ job }) => {
             try {
                 await axios.post(`${USER_API_END_POINT}/save-job/${job?._id}`, {}, { withCredentials: true });
             } catch (err) {}
+        }
+    };
+
+    const handleApply = async (e) => {
+        e.stopPropagation();
+        if (!user) {
+            toast.error("Please login to apply for this position");
+            navigate("/login");
+            return;
+        }
+
+        if (user.role === "recruiter") {
+            toast.error("Recruiter accounts cannot apply for jobs");
+            return;
+        }
+
+        if (isApplied) {
+            toast.info("You have already applied for this position");
+            return;
+        }
+
+        try {
+            setIsApplying(true);
+            const res = await axios.post(`${APPLICATION_API_END_POINT}/apply/${job?._id}`, {}, {
+                withCredentials: true
+            });
+
+            if (res.data.success) {
+                toast.success(res.data.message || `Application submitted for ${job?.title}!`);
+                
+                try {
+                    const appliedRes = await axios.get(`${APPLICATION_API_END_POINT}/get`, { 
+                        withCredentials: true 
+                    });
+                    if (appliedRes.data.success && Array.isArray(appliedRes.data.applications)) {
+                        dispatch(setAllAppliedJobs(appliedRes.data.applications));
+                    }
+                } catch (err) {
+                    dispatch(setAllAppliedJobs([
+                        ...(allAppliedJobs || []), 
+                        { _id: `temp-${Date.now()}`, job: job, applicant: user?._id, status: "pending" }
+                    ]));
+                }
+            }
+        } catch (error) {
+            console.error("Apply job error:", error);
+            toast.error(error.response?.data?.message || "Failed to submit application");
+        } finally {
+            setIsApplying(false);
         }
     };
     
@@ -112,19 +162,30 @@ const Job = ({ job }) => {
                     <Button 
                         onClick={() => navigate(`/description/${job?._id}`)} 
                         variant="outline" 
-                        className="flex-1 text-xs border-slate-200 text-slate-700 hover:bg-slate-50 rounded-xl"
+                        className="flex-1 text-xs border-slate-200 text-slate-700 hover:bg-slate-50 rounded-xl cursor-pointer"
                     >
                         Details
                     </Button>
                     <Button 
-                        onClick={() => navigate(`/description/${job?._id}`)} 
-                        className={`flex-1 text-xs font-medium rounded-xl shadow-xs ${
+                        onClick={isApplied ? () => navigate("/profile?tab=applied") : handleApply} 
+                        disabled={isApplying}
+                        className={`flex-1 text-xs font-medium rounded-xl shadow-xs transition-colors cursor-pointer ${
                             isApplied 
                                 ? "bg-slate-100 text-slate-600 hover:bg-slate-200 border border-slate-200" 
                                 : "bg-indigo-600 hover:bg-indigo-700 text-white"
                         }`}
+                        title={isApplied ? "Already applied — view status in Student Dashboard" : "Apply directly for this job"}
                     >
-                        {isApplied ? "View Status" : "Apply Now"}
+                        {isApplying ? (
+                            <span className="flex items-center justify-center gap-1.5">
+                                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                                Applying...
+                            </span>
+                        ) : isApplied ? (
+                            "✓ Applied"
+                        ) : (
+                            "Apply Now"
+                        )}
                     </Button>
                 </div>
             </div>

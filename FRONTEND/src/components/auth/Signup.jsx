@@ -3,13 +3,12 @@ import Navbar from '../shared/Navbar';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'sonner';
 import { useDispatch, useSelector } from 'react-redux';
-import { setLoading, setUser } from '../../redux/authSlice';
-import { Loader2 } from 'lucide-react';
+import { setLoading } from '../../redux/authSlice';
+import { Loader2, ChevronDown } from 'lucide-react';
 import { USER_API_END_POINT } from '@/utils/constants';
 
 const Signup = () => {
@@ -34,8 +33,17 @@ const Signup = () => {
         setInput({ ...input, file: e.target.files[0] });
     };
 
+    const handleRoleChange = (e) => {
+        setInput({ ...input, role: e.target.value });
+    };
+
     const submitHandler = async (e) => {
         e.preventDefault();
+
+        if (!input.fullname || !input.email || !input.phoneNumber || !input.password) {
+            toast.error("Please fill in all mandatory fields");
+            return;
+        }
         
         const formData = new FormData();
         formData.append("fullname", input.fullname);
@@ -89,10 +97,12 @@ const Signup = () => {
                         <Input 
                             type="text" 
                             name="fullname" 
-                            value={input.fullname || ""} 
+                            id="fullname"
+                            value={input.fullname} 
                             onChange={changeEventHandler} 
-                            placeholder="Vaishnavi Sharma" 
-                            className="h-10 border-slate-200 focus-visible:ring-indigo-500/20 focus-visible:border-indigo-600"
+                            placeholder="Your full name" 
+                            required
+                            className="h-10 bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 focus:bg-white focus-visible:ring-indigo-500/20 focus-visible:border-indigo-600"
                         />
                     </div>
                     
@@ -101,10 +111,12 @@ const Signup = () => {
                         <Input 
                             type="email" 
                             name="email" 
-                            value={input.email || ""} 
+                            id="email"
+                            value={input.email} 
                             onChange={changeEventHandler} 
                             placeholder="name@example.com" 
-                            className="h-10 border-slate-200 focus-visible:ring-indigo-500/20 focus-visible:border-indigo-600"
+                            required
+                            className="h-10 bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 focus:bg-white focus-visible:ring-indigo-500/20 focus-visible:border-indigo-600"
                         />
                     </div>
 
@@ -113,10 +125,12 @@ const Signup = () => {
                         <Input 
                             type="text" 
                             name="phoneNumber" 
-                            value={input.phoneNumber || ""} 
+                            id="phoneNumber"
+                            value={input.phoneNumber} 
                             onChange={changeEventHandler} 
                             placeholder="1234567890" 
-                            className="h-10 border-slate-200 focus-visible:ring-indigo-500/20 focus-visible:border-indigo-600"
+                            required
+                            className="h-10 bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 focus:bg-white focus-visible:ring-indigo-500/20 focus-visible:border-indigo-600"
                         />
                     </div>
 
@@ -125,48 +139,53 @@ const Signup = () => {
                         <Input 
                             type="password" 
                             name="password" 
-                            value={input.password || ""} 
+                            id="password"
+                            value={input.password} 
                             onChange={changeEventHandler} 
                             placeholder="••••••••" 
-                            className="h-10 border-slate-200 focus-visible:ring-indigo-500/20 focus-visible:border-indigo-600"
+                            required
+                            className="h-10 bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 focus:bg-white focus-visible:ring-indigo-500/20 focus-visible:border-indigo-600"
                         />
                     </div>
 
-                    <div className="flex items-center justify-between my-5 p-3 bg-slate-50 rounded-xl border border-slate-100">
-                        <Label className="text-xs font-semibold uppercase tracking-wider text-slate-500">Role</Label>
-                        <RadioGroup 
-                            className="flex items-center gap-4 text-sm"
-                            value={input.role || "student"} 
-                            onValueChange={(value) => setInput({ ...input, role: value })}
-                        >
-                            <div className="flex items-center space-x-2">
-                                <RadioGroupItem value="student" id="student" />
-                                <Label htmlFor="student" className="text-sm font-medium text-slate-700 cursor-pointer">Candidate / Student</Label>
+                    {/* Role Dropdown */}
+                    <div className="my-4 space-y-1.5">
+                        <Label htmlFor="role" className="text-xs font-semibold uppercase tracking-wider text-slate-600">Select Role</Label>
+                        <div className="relative">
+                            <select
+                                id="role"
+                                name="role"
+                                value={input.role || "student"}
+                                onChange={handleRoleChange}
+                                className="w-full h-10 px-3 py-2 pr-10 text-sm font-medium bg-slate-50 border border-slate-200 rounded-lg text-slate-900 focus:bg-white focus:outline-none focus:border-indigo-600 focus:ring-2 focus:ring-indigo-500/20 cursor-pointer appearance-none transition-colors"
+                            >
+                                <option value="student">Candidate / Student</option>
+                                <option value="recruiter">Recruiter / Employer</option>
+                            </select>
+                            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-500">
+                                <ChevronDown className="h-4 w-4" />
                             </div>
-                            <div className="flex items-center space-x-2">
-                                <RadioGroupItem value="recruiter" id="recruiter" />
-                                <Label htmlFor="recruiter" className="text-sm font-medium text-slate-700 cursor-pointer">Recruiter</Label>
-                            </div>
-                        </RadioGroup>
+                        </div>
                     </div>
 
                     <div className="my-4 space-y-1.5">
-                        <Label htmlFor="file" className="text-xs font-semibold uppercase tracking-wider text-slate-600">Profile Picture</Label>
+                        <Label htmlFor="file" className="text-xs font-semibold uppercase tracking-wider text-slate-600">Profile Picture (Optional)</Label>
                         <Input 
                             type="file" 
+                            id="file"
                             accept="image/*" 
                             onChange={changeFileHandler} 
-                            className="border-slate-200 file:mr-4 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 cursor-pointer"
+                            className="h-10 bg-slate-50 border-slate-200 file:mr-4 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 cursor-pointer"
                         />
                     </div>
 
-                   {
+                    {
                         loading ? (
-                            <Button className="w-full mt-6 bg-indigo-600 hover:bg-indigo-700 text-white font-medium shadow-xs" disabled>
+                            <Button className="w-full mt-6 bg-indigo-600 hover:bg-indigo-700 text-white font-medium shadow-xs cursor-pointer" disabled>
                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait
                             </Button>
                         ) : (
-                            <Button type="submit" className="w-full mt-6 bg-indigo-600 hover:bg-indigo-700 text-white font-medium shadow-xs transition-colors">
+                            <Button type="submit" className="w-full mt-6 bg-indigo-600 hover:bg-indigo-700 text-white font-medium shadow-xs transition-colors cursor-pointer">
                                 Create Account
                             </Button>
                         )

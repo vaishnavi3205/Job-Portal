@@ -198,7 +198,7 @@ const CompanySetup = () => {
                                 rows="3"
                                 value={input.description}
                                 onChange={changeEventHandler}
-                                className="w-full p-2.5 text-xs border border-slate-200 rounded-xl focus:outline-none focus:ring-1 focus:ring-indigo-500/20 text-slate-800"
+                                className="w-full p-2.5 text-xs border border-slate-200 rounded-xl bg-slate-50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-indigo-500/20 text-slate-800"
                                 placeholder="Brief summary of what the company builds, products, or services..."
                             />
                         </div>

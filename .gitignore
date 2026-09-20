@@ -1,5 +1,22 @@
+# node_modules/
+# dist/
+# build/
+# .DS_Store
+
+# Dependencies
 node_modules/
-.env
+
+# Build folders
 dist/
 build/
+
+# Environment variables & secrets
+.env
+BACKEND/.env
+
+# Local uploads and test files
+uploads/
+BACKEND/uploads/
+
+# OS metadata
 .DS_Store

@@ -15,11 +15,11 @@ import useGetAllCompanies from '@/hooks/useGetAllCompanies';
 const PostJob = () => {
     useGetAllCompanies();
     const [input, setInput] = useState({
-        title: "",
-        description: "",
-        requirements: "",
-        salary: "",
-        location: "",
+        title: "Full Stack Developer Intern",
+        description: "We are seeking a talented and motivated Full Stack Developer Intern to collaborate with our core engineering team. You will build and test full-stack features using React, Node.js, and MongoDB.",
+        requirements: "React.js, Node.js, Express, MongoDB, Tailwind CSS, Git",
+        salary: "6",
+        location: "Bangalore, India (Hybrid)",
         jobType: "Internship",
         experience: 0,
         position: 2,
@@ -161,7 +161,7 @@ const PostJob = () => {
                                     id="companyId"
                                     value={input.companyId}
                                     onChange={selectChangeHandler}
-                                    className="w-full h-9 text-xs border border-slate-200 rounded-xl px-3 bg-white focus:outline-none focus:ring-1 focus:ring-indigo-500/20 text-slate-800"
+                                    className="w-full h-9 text-xs border border-slate-200 rounded-xl px-3 bg-slate-50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-indigo-500/20 text-slate-800"
                                     required
                                 >
                                     <option value="">-- Choose a company --</option>
@@ -183,7 +183,7 @@ const PostJob = () => {
                                 rows="3"
                                 value={input.description}
                                 onChange={changeEventHandler}
-                                className="w-full p-2.5 text-xs border border-slate-200 rounded-xl focus:outline-none focus:ring-1 focus:ring-indigo-500/20 text-slate-800"
+                                className="w-full p-2.5 text-xs border border-slate-200 rounded-xl bg-slate-50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-indigo-500/20 text-slate-800"
                                 placeholder="Describe the role objectives, team context, and responsibilities..."
                                 required
                             />
@@ -242,7 +242,7 @@ const PostJob = () => {
                                 name="jobType"
                                 value={input.jobType}
                                 onChange={changeEventHandler}
-                                className="w-full h-9 text-xs border border-slate-200 rounded-xl px-3 bg-white focus:outline-none focus:ring-1 focus:ring-indigo-500/20 text-slate-800"
+                                className="w-full h-9 text-xs border border-slate-200 rounded-xl px-3 bg-slate-50 focus:outline-none focus:bg-white focus:ring-1 focus:ring-indigo-500/20 text-slate-800"
                             >
                                 <option value="Internship">Internship (Student Friendly)</option>
                                 <option value="Full Time">Full Time</option>

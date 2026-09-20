@@ -209,6 +209,35 @@ export const updateProfile = async (req, res) => {
             user.email = email;
         }
 
+        // Validate mandatory academic details and resume for student profiles
+        if (user.role === "student") {
+            const hasCollege = (college && college.trim()) || user.profile?.college;
+            const hasDegree = (degree && degree.trim()) || user.profile?.degree;
+            const hasGradYear = (graduationYear && graduationYear.toString().trim()) || user.profile?.graduationYear;
+            const hasCgpa = (cgpa && cgpa.toString().trim()) || user.profile?.cgpa;
+            const hasSkills = (skills && (Array.isArray(skills) ? skills.length > 0 : skills.trim().length > 0)) || (user.profile?.skills && user.profile.skills.length > 0);
+            const hasResume = file || user.profile?.resume;
+
+            if (!hasCollege) {
+                return res.status(400).json({ message: "College / University is mandatory for student profiles.", success: false });
+            }
+            if (!hasDegree) {
+                return res.status(400).json({ message: "Degree & Branch is mandatory for student profiles.", success: false });
+            }
+            if (!hasGradYear) {
+                return res.status(400).json({ message: "Graduation Year is mandatory for student profiles.", success: false });
+            }
+            if (!hasCgpa) {
+                return res.status(400).json({ message: "CGPA / Percentage is mandatory for student profiles.", success: false });
+            }
+            if (!hasSkills) {
+                return res.status(400).json({ message: "Technical Skills are mandatory for student profiles.", success: false });
+            }
+            if (!hasResume) {
+                return res.status(400).json({ message: "Resume document (PDF) is mandatory for student profiles.", success: false });
+            }
+        }
+
         // updating data
         if (fullname) user.fullname = fullname;
         if (phoneNumber) user.phoneNumber = phoneNumber;

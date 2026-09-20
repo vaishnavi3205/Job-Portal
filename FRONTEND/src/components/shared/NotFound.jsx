@@ -40,7 +40,7 @@ const NotFound = () => {
                         <Link to="/jobs" className="w-full sm:w-auto">
                             <Button variant="outline" className="w-full border-slate-200 text-slate-700 hover:bg-slate-100 text-xs font-semibold px-5 h-10 rounded-xl gap-2 cursor-pointer">
                                 <Search className="w-4 h-4" />
-                                Browse Openings
+                                Explore Jobs
                             </Button>
                         </Link>
                     </div>

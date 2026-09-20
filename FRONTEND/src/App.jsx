@@ -1,7 +1,8 @@
 import React, { Suspense, lazy } from 'react';
 import './App.css';
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import { Loader2 } from 'lucide-react';
+import ScrollToTop from './components/shared/ScrollToTop.jsx';
 
 // Lazy loaded page components for optimal bundle splitting
 const Home = lazy(() => import("./components/Home.jsx"));
@@ -9,7 +10,6 @@ const Login = lazy(() => import("./components/auth/Login.jsx"));
 const Signup = lazy(() => import("./components/auth/Signup.jsx"));
 const Jobs = lazy(() => import("./components/jobs.jsx"));
 const JobDescription = lazy(() => import("./components/JobDescription.jsx"));
-const Browse = lazy(() => import("./components/Browse.jsx"));
 const Profile = lazy(() => import('./components/Profile.jsx'));
 
 // Admin / Recruiter Components
@@ -33,16 +33,26 @@ const PageLoader = () => (
   </div>
 );
 
+const RootLayout = () => (
+  <>
+    <ScrollToTop />
+    <Outlet />
+  </>
+);
+
 const appRouter = createBrowserRouter([
-  // Candidate / Public Routes
   {
-    path: "/",
-    element: (
-      <Suspense fallback={<PageLoader />}>
-        <Home />
-      </Suspense>
-    )
-  },
+    element: <RootLayout />,
+    children: [
+      // Candidate / Public Routes
+      {
+        path: "/",
+        element: (
+          <Suspense fallback={<PageLoader />}>
+            <Home />
+          </Suspense>
+        )
+      },
   {
     path: "/login",
     element: (
@@ -76,14 +86,6 @@ const appRouter = createBrowserRouter([
     element: (
       <Suspense fallback={<PageLoader />}>
         <JobDescription />
-      </Suspense>
-    )
-  },
-  {
-    path: "/browse",
-    element: (
-      <Suspense fallback={<PageLoader />}>
-        <Browse />
       </Suspense>
     )
   },
@@ -174,6 +176,8 @@ const appRouter = createBrowserRouter([
   {
     path: "*",
     element: <NotFound />
+  }
+    ]
   }
 ]);
 

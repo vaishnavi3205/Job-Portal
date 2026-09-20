@@ -228,7 +228,7 @@ const EditJob = () => {
                                         name="jobType"
                                         value={input.jobType}
                                         onChange={changeEventHandler}
-                                        className="w-full h-10 px-3 rounded-lg border border-slate-200 bg-white text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus-visible:border-indigo-600"
+                                        className="w-full h-10 px-3 rounded-lg border border-slate-200 bg-slate-50 text-sm text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus-visible:border-indigo-600"
                                     >
                                         <option value="Full-Time">Full-Time</option>
                                         <option value="Part-Time">Part-Time</option>
@@ -339,7 +339,7 @@ const EditJob = () => {
                                     value={input.description} 
                                     onChange={changeEventHandler} 
                                     placeholder="Provide a comprehensive role overview, responsibilities, and expected outcomes..."
-                                    className="w-full p-3 rounded-lg border border-slate-200 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600"
+                                    className="w-full p-3 rounded-lg border border-slate-200 bg-slate-50 text-sm text-slate-800 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600"
                                 />
                             </div>
 

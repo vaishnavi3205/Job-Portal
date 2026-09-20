@@ -107,21 +107,42 @@ export const getAllJobs = async (req, res) => {
         }
 
         if (keyword) {
-            const escaped = escapeRegex(keyword.trim());
+            const trimmed = keyword.trim();
+            const escaped = escapeRegex(trimmed);
+
+            // Flexible pattern allowing spaces/dashes/dots between characters
+            // e.g., "fullstack" matches "Full Stack", "full-stack", etc.
+            const cleanChars = trimmed.replace(/[^a-zA-Z0-9]/g, "").split("");
+            const flexiblePattern = cleanChars.length > 0 
+                ? cleanChars.map(c => escapeRegex(c)).join("[\\s\\-_.]*") 
+                : escaped;
+
             query.$or = [
+                { title: { $regex: flexiblePattern, $options: "i" } },
+                { description: { $regex: flexiblePattern, $options: "i" } },
+                { location: { $regex: flexiblePattern, $options: "i" } },
+                { requirements: { $regex: flexiblePattern, $options: "i" } },
                 { title: { $regex: escaped, $options: "i" } },
-                { description: { $regex: escaped, $options: "i" } },
-                { location: { $regex: escaped, $options: "i" } },
-                { requirements: { $regex: escaped, $options: "i" } },
+                { description: { $regex: escaped, $options: "i" } }
             ];
         }
 
         if (location) {
-            query.location = { $regex: escapeRegex(location.trim()), $options: "i" };
+            const trimmedLoc = location.trim();
+            const locChars = trimmedLoc.replace(/[^a-zA-Z0-9]/g, "").split("");
+            const locPattern = locChars.length > 0 
+                ? locChars.map(c => escapeRegex(c)).join("[\\s\\-_.]*") 
+                : escapeRegex(trimmedLoc);
+            query.location = { $regex: locPattern, $options: "i" };
         }
 
         if (jobType) {
-            query.jobType = { $regex: escapeRegex(jobType.trim()), $options: "i" };
+            const trimmedType = jobType.trim();
+            const typeChars = trimmedType.replace(/[^a-zA-Z0-9]/g, "").split("");
+            const typePattern = typeChars.length > 0 
+                ? typeChars.map(c => escapeRegex(c)).join("[\\s\\-_.]*") 
+                : escapeRegex(trimmedType);
+            query.jobType = { $regex: typePattern, $options: "i" };
         }
 
         if (minSalary !== undefined || maxSalary !== undefined) {

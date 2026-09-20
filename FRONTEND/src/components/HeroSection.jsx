@@ -12,7 +12,7 @@ const HeroSection = () => {
 
     const searchJobHandler = () => {
         dispatch(setSearchedQuery(query));
-        navigate("/browse");
+        navigate("/jobs");
     };
 
     const handleKeyDown = (e) => {
@@ -22,7 +22,7 @@ const HeroSection = () => {
     };
 
     return (
-        <div className="text-center py-12 md:py-20 px-4 bg-gradient-to-b from-slate-50/80 via-white to-white">
+        <div className="text-center py-12 md:py-20 px-4 bg-gradient-to-b from-slate-50/80 via-white to-white relative z-0">
             <div className="flex flex-col gap-6 max-w-4xl mx-auto">
                 <div className="mx-auto inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-700 text-xs font-semibold tracking-wide uppercase shadow-xs">
                     <span className="w-2 h-2 rounded-full bg-indigo-600 animate-pulse"></span>

@@ -19,7 +19,7 @@ export const filterData = [
     {
         key: "role",
         filterType: "Domain / Role",
-        array: ["Frontend Developer", "Backend Developer", "FullStack Developer", "Data Science", "Product Manager"]
+        array: ["Frontend Developer", "Backend Developer", "Full Stack Developer", "Data Science", "Product Manager"]
     },
     {
         key: "salary",
@@ -93,14 +93,14 @@ const FilterCard = ({ selectedFilters = {}, setSelectedFilters }) => {
                 </div>
             )}
 
-            <hr className="my-4 border-slate-100" />
+            <hr className="my-5 border-slate-100" />
 
-            <div className="space-y-5">
+            <div className="space-y-6">
                 {filterData.map((data, index) => {
                     const activeVal = selectedFilters[data.key];
                     return (
-                        <div key={data.key || index}>
-                            <div className="flex items-center justify-between mb-2">
+                        <div key={data.key || index} className="space-y-2">
+                            <div className="flex items-center justify-between pb-1 border-b border-slate-100/80">
                                 <h2 className="font-semibold text-xs uppercase tracking-wider text-slate-500">
                                     {data.filterType}
                                 </h2>
@@ -113,7 +113,7 @@ const FilterCard = ({ selectedFilters = {}, setSelectedFilters }) => {
                                     </button>
                                 )}
                             </div>
-                            <div className="space-y-1">
+                            <div className="space-y-1.5 pt-1">
                                 {data.array.map((item, idx) => {
                                     const isSelected = activeVal === item;
                                     const itemId = `filter-${data.key}-${idx}`;
@@ -121,20 +121,20 @@ const FilterCard = ({ selectedFilters = {}, setSelectedFilters }) => {
                                         <div 
                                             key={itemId} 
                                             onClick={() => handleSelect(data.key, item)}
-                                            className={`flex items-center space-x-2.5 px-2.5 py-1.5 rounded-lg cursor-pointer transition-colors select-none ${
+                                            className={`flex items-center space-x-3 px-3 py-2 rounded-xl cursor-pointer transition-all select-none ${
                                                 isSelected 
-                                                    ? "bg-indigo-50/80 text-indigo-900 font-semibold" 
+                                                    ? "bg-indigo-50/90 text-indigo-900 font-semibold shadow-xs" 
                                                     : "text-slate-600 hover:bg-slate-50 hover:text-slate-900 font-medium"
                                             }`}
                                         >
-                                            <div className={`w-3.5 h-3.5 rounded-full border flex items-center justify-center transition-colors shrink-0 ${
+                                            <div className={`w-4 h-4 rounded-full border flex items-center justify-center transition-colors shrink-0 ${
                                                 isSelected 
                                                     ? "border-indigo-600 bg-indigo-600" 
                                                     : "border-slate-300 bg-white"
                                             }`}>
                                                 {isSelected && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
                                             </div>
-                                            <Label htmlFor={itemId} className="text-xs cursor-pointer select-none">
+                                            <Label htmlFor={itemId} className="text-xs cursor-pointer select-none leading-relaxed">
                                                 {item}
                                             </Label>
                                         </div>

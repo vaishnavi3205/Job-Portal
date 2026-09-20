@@ -56,12 +56,12 @@ const Profile = () => {
     const [activeTab, setActiveTab] = useState(queryTab === "saved" || queryTab === "academics" ? queryTab : "applied");
 
     useEffect(() => {
+        window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    }, []);
+
+    useEffect(() => {
         if (queryTab === "saved" || queryTab === "applied" || queryTab === "academics") {
             setActiveTab(queryTab);
-            const el = document.getElementById("profile-tabs");
-            if (el) {
-                el.scrollIntoView({ behavior: "smooth", block: "start" });
-            }
         } else if (!queryTab) {
             setActiveTab("applied");
         }
