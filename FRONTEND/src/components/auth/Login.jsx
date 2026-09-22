@@ -67,7 +67,11 @@ const Login = () => {
         <div className="min-h-screen bg-slate-50/50">
             <Navbar />
             <div className="flex items-center justify-center max-w-7xl mx-auto py-16 px-4">
-                <form onSubmit={submitHandler} className="w-full max-w-md bg-white border border-slate-200/90 rounded-2xl p-8 shadow-sm">
+                <form onSubmit={submitHandler} autoComplete="off" className="w-full max-w-md bg-white border border-slate-200/90 rounded-2xl p-8 shadow-sm">
+                    {/* Decoy fields to intercept Chrome/Edge password autofill */}
+                    <input type="text" name="prevent_autofill_email" style={{ display: 'none' }} tabIndex={-1} autoComplete="off" />
+                    <input type="password" name="prevent_autofill_pwd" style={{ display: 'none' }} tabIndex={-1} autoComplete="new-password" />
+
                     <div className="mb-6">
                         <h1 className="font-bold text-2xl text-slate-900 tracking-tight">Welcome Back</h1>
                         <p className="text-sm text-slate-500 mt-1">Sign in to your JobPortal account</p>
@@ -81,8 +85,9 @@ const Login = () => {
                             id="email"
                             value={input.email} 
                             onChange={changeEventHandler} 
-                            placeholder="name@example.com" 
+                            placeholder="Enter your email" 
                             required
+                            autoComplete="off"
                             className="h-10 bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 focus:bg-white focus-visible:ring-indigo-500/20 focus-visible:border-indigo-600"
                         />
                     </div>
@@ -95,8 +100,9 @@ const Login = () => {
                             id="password"
                             value={input.password} 
                             onChange={changeEventHandler} 
-                            placeholder="••••••••" 
+                            placeholder="Enter your password" 
                             required
+                            autoComplete="new-password"
                             className="h-10 bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 focus:bg-white focus-visible:ring-indigo-500/20 focus-visible:border-indigo-600"
                         />
                     </div>

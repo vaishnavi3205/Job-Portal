@@ -13,6 +13,7 @@ const LatestJobCards = ({ job }) => {
     const dispatch = useDispatch();
     const { savedJobs, allAppliedJobs } = useSelector(store => store.job);
     const { user } = useSelector(store => store.auth);
+    const isStudent = Boolean(user && user.role === "student");
     const [isApplying, setIsApplying] = useState(false);
 
     const isSaved = savedJobs?.includes(job?._id);
@@ -118,7 +119,7 @@ const LatestJobCards = ({ job }) => {
                     <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
                         ₹{job?.salary} LPA
                     </span>
-                    {isApplied && (
+                    {isStudent && isApplied && (
                         <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-100 text-emerald-800">
                             ✓ Applied
                         </span>
@@ -131,44 +132,48 @@ const LatestJobCards = ({ job }) => {
                             e.stopPropagation();
                             navigate(`/description/${job._id}`);
                         }} 
-                        className="flex-1 border-slate-200 text-slate-700 hover:bg-slate-50 text-xs h-9 rounded-xl cursor-pointer"
+                        className={`${isStudent ? "flex-1" : "w-full"} border-slate-200 text-slate-700 hover:bg-slate-50 hover:text-indigo-600 text-xs h-9 rounded-xl cursor-pointer transition-colors`}
                     >
-                        Details
+                        View Details
                     </Button>
-                    <Button 
-                        onClick={isApplied ? (e) => { e.stopPropagation(); navigate("/profile?tab=applied"); } : handleApply}
-                        disabled={isApplying}
-                        className={`flex-1 font-medium text-xs h-9 rounded-xl shadow-xs transition-colors cursor-pointer ${
-                            isApplied 
-                                ? "bg-slate-100 text-slate-600 hover:bg-slate-200 border border-slate-200" 
-                                : "bg-indigo-600 hover:bg-indigo-700 text-white"
-                        }`}
-                        title={isApplied ? "Already applied — view status in Student Dashboard" : "Apply directly for this position"}
-                    >
-                        {isApplying ? (
-                            <span className="flex items-center justify-center gap-1.5">
-                                <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                                Applying...
-                            </span>
-                        ) : isApplied ? (
-                            "✓ Applied"
-                        ) : (
-                            "Apply Now"
-                        )}
-                    </Button>
-                    <Button 
-                        onClick={saveJobHandler}
-                        variant="outline"
-                        size="icon"
-                        className={`shrink-0 rounded-xl h-9 w-9 border-slate-200 cursor-pointer ${
-                            isSaved 
-                                ? 'text-indigo-600 border-indigo-300 bg-indigo-50/70' 
-                                : 'text-slate-500 hover:text-indigo-600 hover:bg-indigo-50'
-                        }`}
-                        title={isSaved ? "Saved" : "Save for later"}
-                    >
-                        {isSaved ? <BookmarkCheck className="w-4 h-4 text-indigo-600" /> : <Bookmark className="w-4 h-4" />}
-                    </Button>
+                    {isStudent && (
+                        <>
+                            <Button 
+                                onClick={isApplied ? (e) => { e.stopPropagation(); navigate("/profile?tab=applied"); } : handleApply}
+                                disabled={isApplying}
+                                className={`flex-1 font-medium text-xs h-9 rounded-xl shadow-xs transition-colors cursor-pointer ${
+                                    isApplied 
+                                        ? "bg-slate-100 text-slate-600 hover:bg-slate-200 border border-slate-200" 
+                                        : "bg-indigo-600 hover:bg-indigo-700 text-white"
+                                }`}
+                                title={isApplied ? "Already applied — view status in Student Dashboard" : "Apply directly for this position"}
+                            >
+                                {isApplying ? (
+                                    <span className="flex items-center justify-center gap-1.5">
+                                        <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                                        Applying...
+                                    </span>
+                                ) : isApplied ? (
+                                    "✓ Applied"
+                                ) : (
+                                    "Apply Now"
+                                )}
+                            </Button>
+                            <Button 
+                                onClick={saveJobHandler}
+                                variant="outline"
+                                size="icon"
+                                className={`shrink-0 rounded-xl h-9 w-9 border-slate-200 cursor-pointer ${
+                                    isSaved 
+                                        ? 'text-indigo-600 border-indigo-300 bg-indigo-50/70' 
+                                        : 'text-slate-500 hover:text-indigo-600 hover:bg-indigo-50'
+                                }`}
+                                title={isSaved ? "Saved" : "Save for later"}
+                            >
+                                {isSaved ? <BookmarkCheck className="w-4 h-4 text-indigo-600" /> : <Bookmark className="w-4 h-4" />}
+                            </Button>
+                        </>
+                    )}
                 </div>
             </div>
         </div>

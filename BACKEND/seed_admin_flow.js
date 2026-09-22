@@ -171,13 +171,8 @@ const candidateData = [
     }
 ];
 
-const seedDatabase = async () => {
+const seedAdminFlow = async () => {
     try {
-        if (!process.env.MONGO_URI) {
-            console.error("MONGO_URI is missing from .env");
-            process.exit(1);
-        }
-
         console.log("Connecting to MongoDB Atlas...");
         await mongoose.connect(process.env.MONGO_URI);
         console.log("Connected successfully.");
@@ -301,6 +296,7 @@ const seedDatabase = async () => {
             logo: "https://cdn.iconscout.com/icon/free/png-256/free-swiggy-logo-icon-download-in-svg-png-gif-file-formats--food-brand-social-media-pack-logos-icons-4560376.png"
         }, recruiter1._id);
 
+        // Job 1 (Frontend): Aryan (accepted), Vaishnavi Sharma (pending), Vaishnavi Lamkane (accepted), Rohan (rejected)
         await setupJobAndApplicants(recruiter1, razorpay, {
             title: "Frontend Engineering Intern (React & Next.js)",
             description: "Build delightful merchant checkouts, payment UI widgets, and dashboard micro-frontends with high performance and accessibility.",
@@ -324,6 +320,7 @@ const seedDatabase = async () => {
             { email: "rohan.gupta@example.com", status: "rejected" }
         ]);
 
+        // Job 2 (Full Stack): Ananya (accepted), Vaishnavi Sharma (accepted), Aryan (pending), Sneha (rejected)
         await setupJobAndApplicants(recruiter1, zomato, {
             title: "Full Stack Software Engineer",
             description: "Develop high-throughput microservices and interactive customer portals across consumer food ordering and delivery logistics.",
@@ -347,6 +344,7 @@ const seedDatabase = async () => {
             { email: "sneha.reddy@example.com", status: "rejected" }
         ]);
 
+        // Job 3 (Backend): Dev (accepted), Vaishnavi Lamkane (pending), Vaishnavi Sharma (rejected), Rohan (rejected)
         await setupJobAndApplicants(recruiter1, swiggy, {
             title: "Backend API Developer (Node.js & Microservices)",
             description: "Architect high-concurrency order dispatch systems and warehouse inventory sync APIs powering Instamart quick commerce.",
@@ -370,6 +368,7 @@ const seedDatabase = async () => {
             { email: "rohan.gupta@example.com", status: "rejected" }
         ]);
 
+        // Job 4 (Data Science): Sneha (accepted), Rohan (pending), Dev (rejected)
         await setupJobAndApplicants(recruiter1, zomato, {
             title: "Data Science & ML Intern",
             description: "Train real-time recommendation and route optimization models using large scale delivery telemetry and user ordering patterns.",
@@ -392,7 +391,7 @@ const seedDatabase = async () => {
             { email: "dev.malhotra@example.com", status: "rejected" }
         ]);
 
-        // 3. Setup Recruiter 2: ved@gmail.com (if present)
+        // 3. Setup Recruiter 2: ved@gmail.com (if exists) so any session on ved@gmail.com also works
         const recruiter2 = await User.findOne({ email: "ved@gmail.com" });
         if (recruiter2) {
             console.log("\nSetting up jobs for Recruiter: ved@gmail.com...");
@@ -456,24 +455,28 @@ const seedDatabase = async () => {
             ]);
         }
 
-        console.log("\n============================================");
-        console.log("Database seeded successfully!");
-        console.log("============================================");
-        console.log("Recruiter Account:");
-        console.log("  Email:    recruiter@example.com");
-        console.log("  Password: 123456");
-        console.log("--------------------------------------------");
-        console.log("Candidate / Student Accounts:");
-        console.log("  Email:    student@example.com");
-        console.log("  Password: 123456");
-        console.log("  Email:    lamkanevaishnavi7@gmail.com");
-        console.log("============================================\n");
+        console.log("\n=======================================================");
+        console.log("✓ All dummy data successfully seeded & linked!");
+        console.log("=======================================================");
+        console.log("\n1. Recruiter View (/admin/jobs):");
+        console.log("   - Log in as: recruiter@example.com (pw: 123456) or ved@gmail.com");
+        console.log("   - Each job shows 3-4 candidate applicants.");
+        console.log("   - Click 'View Applicants' to see Candidate Details, CGPAs, 100%/80%/20% Skill Matches, Resumes, and the 'Decision' dropdown (Accepted, Pending, Rejected).");
+        console.log("\n2. Student Dashboard View (/profile):");
+        console.log("   - Log in as: student@example.com (pw: 123456) or lamkanevaishnavi7@gmail.com");
+        console.log("   - Student dashboard now has varied application statuses:");
+        console.log("     * 1+ Accepted / Shortlisted (Green)");
+        console.log("     * 1+ Pending / Under Review (Amber)");
+        console.log("     * 1+ Not Selected / Rejected (Red)");
+        console.log("   - Filter pills (All, Under Review, Shortlisted, Not Selected) are all populated.");
+        console.log("   - Expandable timeline stepper shows multi-step progression.");
+        console.log("=======================================================\n");
 
         process.exit(0);
-    } catch (error) {
-        console.error("Seeding failed:", error);
+    } catch (err) {
+        console.error("Error seeding dummy data:", err);
         process.exit(1);
     }
 };
 
-seedDatabase();
+seedAdminFlow();

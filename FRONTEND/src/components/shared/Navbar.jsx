@@ -15,7 +15,8 @@ import {
     ShieldCheck,
     Maximize2,
     X,
-    ExternalLink
+    ExternalLink,
+    Menu
 } from 'lucide-react';
 import axios from 'axios';
 import { toast } from 'sonner';
@@ -35,7 +36,12 @@ const Navbar = () => {
     const [popoverOpen, setPopoverOpen] = useState(false);
     const [photoViewerOpen, setPhotoViewerOpen] = useState(false);
     const [quickProfileOpen, setQuickProfileOpen] = useState(false);
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const dropdownRef = useRef(null);
+
+    useEffect(() => {
+        setMobileMenuOpen(false);
+    }, [location.pathname]);
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -51,7 +57,8 @@ const Navbar = () => {
         };
     }, [popoverOpen]);
 
-    const isRecruiter = user?.role === "recruiter";
+    const isRecruiter = Boolean(user && user.role === "recruiter");
+    const isStudent = Boolean(user && user.role === "student");
 
     const isProfilePage = location.pathname === "/profile";
     const isProfileActive = isProfilePage && (!location.search || location.search === "");
@@ -87,12 +94,13 @@ const Navbar = () => {
                     <Link to="/" className="text-2xl font-extrabold tracking-tight text-slate-900">
                         Job<span className="text-indigo-600">Portal</span>
                     </Link>
-                    {isRecruiter ? (
+                    {isRecruiter && (
                         <span className="inline-flex items-center gap-1 text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-violet-50 text-violet-700 border border-violet-100">
                             <ShieldCheck className="w-3 h-3 text-violet-600" />
                             Recruiter Admin
                         </span>
-                    ) : (
+                    )}
+                    {isStudent && (
                         <span className="hidden sm:inline-flex items-center gap-1 text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-100">
                             <GraduationCap className="w-3 h-3 text-indigo-600" />
                             Student Edition
@@ -147,24 +155,36 @@ const Navbar = () => {
                                         Jobs & Internships
                                     </Link>
                                 </li>
-                                <li>
-                                    <Link 
-                                        to="/profile" 
-                                        className={`transition-colors flex items-center gap-1.5 ${location.pathname === "/profile" ? "text-indigo-600 font-semibold" : "hover:text-indigo-600"}`}
-                                    >
-                                        Student Dashboard
-                                        {appliedCount > 0 && (
-                                            <span className="bg-indigo-100 text-indigo-700 font-bold text-[10px] px-1.5 py-0.5 rounded-full">
-                                                {appliedCount}
-                                            </span>
-                                        )}
-                                    </Link>
-                                </li>
+                                {isStudent && (
+                                    <li>
+                                        <Link 
+                                            to="/profile" 
+                                            className={`transition-colors flex items-center gap-1.5 ${location.pathname === "/profile" ? "text-indigo-600 font-semibold" : "hover:text-indigo-600"}`}
+                                        >
+                                            Student Dashboard
+                                            {appliedCount > 0 && (
+                                                <span className="bg-indigo-100 text-indigo-700 font-bold text-[10px] px-1.5 py-0.5 rounded-full">
+                                                    {appliedCount}
+                                                </span>
+                                            )}
+                                        </Link>
+                                    </li>
+                                )}
                             </>
                         )}
                     </ul>
 
 
+
+                    {/* Mobile Hamburger Button */}
+                    <button
+                        type="button"
+                        onClick={() => setMobileMenuOpen(prev => !prev)}
+                        className="md:hidden p-1.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 focus:outline-none cursor-pointer"
+                        aria-label="Toggle navigation menu"
+                    >
+                        {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+                    </button>
 
                     {/* User Profile Avatar Popover or Login */}
                     {!user ? (
@@ -484,6 +504,60 @@ const Navbar = () => {
                             </div>
                         </div>
                     </div>
+                </div>
+            )}
+            {/* Mobile Navigation Drawer */}
+            {mobileMenuOpen && (
+                <div className="md:hidden border-t border-slate-100 bg-white px-4 py-3 space-y-2 shadow-lg animate-in slide-in-from-top-2">
+                    <Link
+                        to="/"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className={`block py-2 px-3 rounded-lg text-sm font-medium ${location.pathname === "/" ? "bg-indigo-50 text-indigo-600 font-semibold" : "text-slate-700 hover:bg-slate-50"}`}
+                    >
+                        Home
+                    </Link>
+                    {isRecruiter ? (
+                        <>
+                            <Link
+                                to="/admin/companies"
+                                onClick={() => setMobileMenuOpen(false)}
+                                className={`flex items-center justify-between py-2 px-3 rounded-lg text-sm font-medium ${location.pathname.startsWith("/admin/companies") ? "bg-indigo-50 text-indigo-600 font-semibold" : "text-slate-700 hover:bg-slate-50"}`}
+                            >
+                                <span>Companies</span>
+                                <span className="bg-slate-100 text-slate-600 font-bold text-[10px] px-2 py-0.5 rounded-full">{companiesCount}</span>
+                            </Link>
+                            <Link
+                                to="/admin/jobs"
+                                onClick={() => setMobileMenuOpen(false)}
+                                className={`flex items-center justify-between py-2 px-3 rounded-lg text-sm font-medium ${location.pathname.startsWith("/admin/jobs") ? "bg-indigo-50 text-indigo-600 font-semibold" : "text-slate-700 hover:bg-slate-50"}`}
+                            >
+                                <span>Posted Jobs</span>
+                                <span className="bg-indigo-100 text-indigo-700 font-bold text-[10px] px-2 py-0.5 rounded-full">{adminJobsCount}</span>
+                            </Link>
+                        </>
+                    ) : (
+                        <>
+                            <Link
+                                to="/jobs"
+                                onClick={() => setMobileMenuOpen(false)}
+                                className={`block py-2 px-3 rounded-lg text-sm font-medium ${location.pathname === "/jobs" ? "bg-indigo-50 text-indigo-600 font-semibold" : "text-slate-700 hover:bg-slate-50"}`}
+                            >
+                                Jobs & Internships
+                            </Link>
+                            {isStudent && (
+                                <Link
+                                    to="/profile"
+                                    onClick={() => setMobileMenuOpen(false)}
+                                    className={`flex items-center justify-between py-2 px-3 rounded-lg text-sm font-medium ${location.pathname === "/profile" ? "bg-indigo-50 text-indigo-600 font-semibold" : "text-slate-700 hover:bg-slate-50"}`}
+                                >
+                                    <span>Student Dashboard</span>
+                                    {appliedCount > 0 && (
+                                        <span className="bg-indigo-100 text-indigo-700 font-bold text-[10px] px-2 py-0.5 rounded-full">{appliedCount}</span>
+                                    )}
+                                </Link>
+                            )}
+                        </>
+                    )}
                 </div>
             )}
         </div>

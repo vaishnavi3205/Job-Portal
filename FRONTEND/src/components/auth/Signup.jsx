@@ -7,7 +7,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'sonner';
 import { useDispatch, useSelector } from 'react-redux';
-import { setLoading } from '../../redux/authSlice';
+import { setLoading, setUser } from '../../redux/authSlice';
 import { Loader2, ChevronDown } from 'lucide-react';
 import { USER_API_END_POINT } from '@/utils/constants';
 
@@ -65,8 +65,13 @@ const Signup = () => {
             });
 
             if (res.data.success) {
-                toast.success(res.data.message);
-                navigate("/login");
+                toast.success(res.data.message || "Account created successfully!");
+                if (res.data.user) {
+                    dispatch(setUser(res.data.user));
+                    navigate(res.data.user?.role === "recruiter" ? "/admin/jobs" : "/");
+                } else {
+                    navigate("/login");
+                }
                 return;
             }
         } catch (error) {
@@ -82,7 +87,11 @@ const Signup = () => {
         <div className="min-h-screen bg-slate-50/50">
             <Navbar />
             <div className="flex items-center justify-center max-w-7xl mx-auto py-12 px-4">
-                <form onSubmit={submitHandler} className="w-full max-w-md bg-white border border-slate-200/90 rounded-2xl p-8 shadow-sm">
+                <form onSubmit={submitHandler} autoComplete="off" className="w-full max-w-md bg-white border border-slate-200/90 rounded-2xl p-8 shadow-sm">
+                    {/* Decoy fields to intercept Chrome/Edge password autofill */}
+                    <input type="text" name="prevent_autofill_email" style={{ display: 'none' }} tabIndex={-1} autoComplete="off" />
+                    <input type="password" name="prevent_autofill_pwd" style={{ display: 'none' }} tabIndex={-1} autoComplete="new-password" />
+
                     <div className="mb-6">
                         <h1 className="font-bold text-2xl text-slate-900 tracking-tight">
                             {input.role === "recruiter" ? "Create Recruiter Account" : "Create Candidate Account"}
@@ -100,8 +109,9 @@ const Signup = () => {
                             id="fullname"
                             value={input.fullname} 
                             onChange={changeEventHandler} 
-                            placeholder="Your full name" 
+                            placeholder="Enter your full name" 
                             required
+                            autoComplete="off"
                             className="h-10 bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 focus:bg-white focus-visible:ring-indigo-500/20 focus-visible:border-indigo-600"
                         />
                     </div>
@@ -114,8 +124,9 @@ const Signup = () => {
                             id="email"
                             value={input.email} 
                             onChange={changeEventHandler} 
-                            placeholder="name@example.com" 
+                            placeholder="Enter your email" 
                             required
+                            autoComplete="off"
                             className="h-10 bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 focus:bg-white focus-visible:ring-indigo-500/20 focus-visible:border-indigo-600"
                         />
                     </div>
@@ -128,8 +139,9 @@ const Signup = () => {
                             id="phoneNumber"
                             value={input.phoneNumber} 
                             onChange={changeEventHandler} 
-                            placeholder="1234567890" 
+                            placeholder="Enter your phone number" 
                             required
+                            autoComplete="off"
                             className="h-10 bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 focus:bg-white focus-visible:ring-indigo-500/20 focus-visible:border-indigo-600"
                         />
                     </div>
@@ -142,8 +154,9 @@ const Signup = () => {
                             id="password"
                             value={input.password} 
                             onChange={changeEventHandler} 
-                            placeholder="••••••••" 
+                            placeholder="Enter your password" 
                             required
+                            autoComplete="new-password"
                             className="h-10 bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 focus:bg-white focus-visible:ring-indigo-500/20 focus-visible:border-indigo-600"
                         />
                     </div>

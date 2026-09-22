@@ -39,7 +39,9 @@ const AppliedJobTable = () => {
 
     // Filter applications
     const filteredApps = applications.filter(app => {
-        const matchesStatus = statusFilter === 'all' || app?.status?.toLowerCase() === statusFilter.toLowerCase();
+        const s = app?.status?.toLowerCase();
+        const matchesStatus = statusFilter === 'all' || 
+            (statusFilter === 'shortlisted' ? (s === 'shortlisted' || s === 'accepted') : s === statusFilter.toLowerCase());
         const matchesSearch = 
             app?.job?.title?.toLowerCase().includes(searchFilter.toLowerCase()) ||
             app?.job?.company?.name?.toLowerCase().includes(searchFilter.toLowerCase());
@@ -55,8 +57,14 @@ const AppliedJobTable = () => {
 
     const getStatusBadge = (status) => {
         switch (status?.toLowerCase()) {
-            case 'shortlisted':
             case 'accepted':
+                return (
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                        Accepted
+                    </span>
+                );
+            case 'shortlisted':
                 return (
                     <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
                         <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
@@ -67,14 +75,14 @@ const AppliedJobTable = () => {
                 return (
                     <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200">
                         <Clock className="w-3.5 h-3.5 text-amber-600" />
-                        Under Review
+                        Pending / Under Review
                     </span>
                 );
             case 'rejected':
                 return (
                     <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-rose-50 text-rose-700 border border-rose-200">
                         <AlertCircle className="w-3.5 h-3.5 text-rose-600" />
-                        Not Selected
+                        Rejected
                     </span>
                 );
             default:

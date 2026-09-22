@@ -14,6 +14,7 @@ const Job = ({ job }) => {
     const dispatch = useDispatch();
     const { savedJobs, allAppliedJobs } = useSelector(store => store.job);
     const { user } = useSelector(store => store.auth);
+    const isStudent = Boolean(user && user.role === "student");
     const [isApplying, setIsApplying] = useState(false);
 
     const isSaved = savedJobs?.includes(job?._id);
@@ -100,19 +101,21 @@ const Job = ({ job }) => {
                     <span className="text-xs font-medium text-slate-400">
                         {daysAgoFunction(job?.createdAt)}
                     </span>
-                    <Button 
-                        variant="ghost" 
-                        onClick={handleSave}
-                        className={`rounded-full h-8 w-8 transition-colors ${
-                            isSaved 
-                                ? "text-indigo-600 bg-indigo-50 hover:bg-indigo-100" 
-                                : "text-slate-400 hover:text-indigo-600 hover:bg-indigo-50"
-                        }`} 
-                        size="icon"
-                        title={isSaved ? "Saved to bookmarks" : "Save for later"}
-                    >
-                        {isSaved ? <BookmarkCheck className="w-4 h-4 text-indigo-600" /> : <Bookmark className="w-4 h-4" />}
-                    </Button>
+                    {isStudent && (
+                        <Button 
+                            variant="ghost" 
+                            onClick={handleSave}
+                            className={`rounded-full h-8 w-8 transition-colors ${
+                                isSaved 
+                                    ? "text-indigo-600 bg-indigo-50 hover:bg-indigo-100" 
+                                    : "text-slate-400 hover:text-indigo-600 hover:bg-indigo-50"
+                            }`} 
+                            size="icon"
+                            title={isSaved ? "Saved to bookmarks" : "Save for later"}
+                        >
+                            {isSaved ? <BookmarkCheck className="w-4 h-4 text-indigo-600" /> : <Bookmark className="w-4 h-4" />}
+                        </Button>
+                    )}
                 </div>
 
                 <div className="flex items-center gap-3 my-3">
@@ -152,7 +155,7 @@ const Job = ({ job }) => {
                     <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
                         ₹{job?.salary} LPA
                     </span>
-                    {isApplied && (
+                    {isStudent && isApplied && (
                         <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-100 text-emerald-800">
                             ✓ Applied
                         </span>
@@ -162,31 +165,33 @@ const Job = ({ job }) => {
                     <Button 
                         onClick={() => navigate(`/description/${job?._id}`)} 
                         variant="outline" 
-                        className="flex-1 text-xs border-slate-200 text-slate-700 hover:bg-slate-50 rounded-xl cursor-pointer"
+                        className={`${isStudent ? "flex-1" : "w-full"} text-xs border-slate-200 text-slate-700 hover:bg-slate-50 hover:text-indigo-600 rounded-xl cursor-pointer transition-colors`}
                     >
-                        Details
+                        View Details
                     </Button>
-                    <Button 
-                        onClick={isApplied ? () => navigate("/profile?tab=applied") : handleApply} 
-                        disabled={isApplying}
-                        className={`flex-1 text-xs font-medium rounded-xl shadow-xs transition-colors cursor-pointer ${
-                            isApplied 
-                                ? "bg-slate-100 text-slate-600 hover:bg-slate-200 border border-slate-200" 
-                                : "bg-indigo-600 hover:bg-indigo-700 text-white"
-                        }`}
-                        title={isApplied ? "Already applied — view status in Student Dashboard" : "Apply directly for this job"}
-                    >
-                        {isApplying ? (
-                            <span className="flex items-center justify-center gap-1.5">
-                                <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                                Applying...
-                            </span>
-                        ) : isApplied ? (
-                            "✓ Applied"
-                        ) : (
-                            "Apply Now"
-                        )}
-                    </Button>
+                    {isStudent && (
+                        <Button 
+                            onClick={isApplied ? () => navigate("/profile?tab=applied") : handleApply} 
+                            disabled={isApplying}
+                            className={`flex-1 text-xs font-medium rounded-xl shadow-xs transition-colors cursor-pointer ${
+                                isApplied 
+                                    ? "bg-slate-100 text-slate-600 hover:bg-slate-200 border border-slate-200" 
+                                    : "bg-indigo-600 hover:bg-indigo-700 text-white"
+                            }`}
+                            title={isApplied ? "Already applied — view status in Student Dashboard" : "Apply directly for this job"}
+                        >
+                            {isApplying ? (
+                                <span className="flex items-center justify-center gap-1.5">
+                                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                                    Applying...
+                                </span>
+                            ) : isApplied ? (
+                                "✓ Applied"
+                            ) : (
+                                "Apply Now"
+                            )}
+                        </Button>
+                    )}
                 </div>
             </div>
         </div>

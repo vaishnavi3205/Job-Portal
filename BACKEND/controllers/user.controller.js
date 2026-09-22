@@ -30,19 +30,42 @@ export const register = async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        await User.create({
+        const newUser = await User.create({
             fullname,
             email,
             phoneNumber,
             password: hashedPassword,
             role,
-            profile:{
+            profile: {
                 profilePhoto: profilePhoto || "",
             }
         });
 
-        return res.status(201).json({
+        const tokenData = {
+            userId: newUser._id,
+            role: newUser.role
+        };
+        const token = await jwt.sign(tokenData, process.env.SECRET_KEY, { expiresIn: '1d' });
+
+        const userResponse = {
+            _id: newUser._id,
+            fullname: newUser.fullname,
+            email: newUser.email,
+            phoneNumber: newUser.phoneNumber,
+            role: newUser.role,
+            profile: newUser.profile,
+            savedJobs: []
+        };
+
+        const isProduction = process.env.NODE_ENV === "production";
+        return res.status(201).cookie("token", token, { 
+            maxAge: 1 * 24 * 60 * 60 * 1000, 
+            httpOnly: true, 
+            sameSite: isProduction ? 'none' : 'lax',
+            secure: isProduction
+        }).json({
             message: "Account created successfully.",
+            user: userResponse,
             success: true
         });
     } catch (error) {

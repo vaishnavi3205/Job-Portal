@@ -3,11 +3,14 @@ import Navbar from './shared/Navbar';
 import FilterCard from './FilterCard';
 import Job from './Job';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import useGetAllJobs from '@/hooks/useGetAllJobs';
 
 const Jobs = () => {
     useGetAllJobs();
     const { allJobs, searchedQuery } = useSelector(store => store.job);
+    const { user } = useSelector(store => store.auth || {});
+    const isStudent = Boolean(user && user.role === "student");
 
     const [selectedFilters, setSelectedFilters] = useState({
         jobType: "",
@@ -161,10 +164,15 @@ const Jobs = () => {
                         </div>
                     ) : (
                         <div className="flex-1 min-h-[70vh] pb-5">
-                            <div className="mb-4 flex items-center justify-between">
+                            <div className="mb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                                 <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
-                                    Showing <span className="text-indigo-600 font-bold">{filterJobs.length}</span> positions for students
+                                    Showing <span className="text-indigo-600 font-bold">{filterJobs.length}</span> {isStudent ? "positions for students" : "available jobs"}
                                 </span>
+                                {!isStudent && (
+                                    <span className="text-xs text-slate-500 bg-indigo-50/70 border border-indigo-100/80 px-3 py-1 rounded-full w-fit">
+                                        Browsing mode: <Link to="/signup" className="text-indigo-600 font-semibold hover:underline">Sign up as Student</Link> to apply
+                                    </span>
+                                )}
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                                 {filterJobs.map((job) => (

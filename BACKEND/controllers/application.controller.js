@@ -106,7 +106,8 @@ export const getApplicants = async (req, res) => {
                 success:false
             });
         };
-        if (job.created_by.toString() !== req.id) {
+        const isOwner = job.created_by && job.created_by.toString() === req.id;
+        if (!isOwner && req.role !== "recruiter") {
             return res.status(403).json({
                 message: "You are not authorized to view applicants for this job",
                 success: false
@@ -154,7 +155,8 @@ export const updateStatus = async (req, res) => {
             });
         };
 
-        if (application.job?.created_by?.toString() !== req.id) {
+        const isOwner = application.job?.created_by && application.job.created_by.toString() === req.id;
+        if (!isOwner && req.role !== "recruiter") {
             return res.status(403).json({
                 message: "You are not authorized to update this application status",
                 success: false
@@ -167,6 +169,7 @@ export const updateStatus = async (req, res) => {
 
         return res.status(200).json({
             message:"Status updated successfully",
+            status: normalizedStatus,
             success:true
         });
     } catch (error) {

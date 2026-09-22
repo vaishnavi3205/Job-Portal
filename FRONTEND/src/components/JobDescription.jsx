@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Badge } from './ui/badge';
 import { Button } from './ui/button';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { setSingleJob, toggleSaveJob } from '@/redux/jobSlice';
 import { useDispatch, useSelector } from 'react-redux';
@@ -389,41 +389,72 @@ const JobDescription = () => {
                             </div>
 
                             <div className="space-y-2 pt-2 border-t border-slate-100">
-                                <Button
-                                    onClick={isApplied || isClosed ? null : applyJobHandler}
-                                    disabled={isApplied || isClosed}
-                                    className={`w-full font-semibold py-2.5 rounded-xl text-sm shadow-xs transition-all cursor-pointer ${
-                                        isClosed
-                                            ? "bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed"
-                                            : isApplied
-                                                ? "bg-slate-100 text-slate-500 border border-slate-200 cursor-not-allowed"
-                                                : "bg-indigo-600 hover:bg-indigo-700 text-white shadow-indigo-600/20"
-                                    }`}
-                                >
-                                    {isClosed ? "Applications Closed" : isApplied ? "✓ Already Applied" : "Apply Now"}
-                                </Button>
-
-                                <Button
-                                    onClick={saveJobHandler}
-                                    variant="outline"
-                                    className={`w-full flex items-center justify-center gap-2 text-xs font-medium rounded-xl border-slate-200 cursor-pointer ${
-                                        isSaved 
-                                            ? "text-indigo-600 bg-indigo-50 border-indigo-200" 
-                                            : "text-slate-700 hover:bg-slate-50"
-                                    }`}
-                                >
-                                    {isSaved ? (
-                                        <>
-                                            <BookmarkCheck className="w-4 h-4 text-indigo-600" />
-                                            Saved to Bookmarks
-                                        </>
-                                    ) : (
-                                        <>
+                                {!user ? (
+                                    <div className="space-y-2.5">
+                                        <Button
+                                            onClick={() => navigate("/signup")}
+                                            className="w-full font-semibold py-2.5 rounded-xl text-sm bg-indigo-600 hover:bg-indigo-700 text-white shadow-xs transition-all cursor-pointer"
+                                        >
+                                            Sign Up as Student to Apply
+                                        </Button>
+                                        <p className="text-[11px] text-slate-500 text-center">
+                                            Already have an account? <Link to="/login" className="text-indigo-600 font-semibold hover:underline">Sign in</Link>
+                                        </p>
+                                        <Button
+                                            onClick={() => navigate("/login")}
+                                            variant="outline"
+                                            className="w-full flex items-center justify-center gap-2 text-xs font-medium rounded-xl border-slate-200 text-slate-600 hover:bg-slate-50 cursor-pointer"
+                                        >
                                             <Bookmark className="w-4 h-4" />
-                                            Save For Later
-                                        </>
-                                    )}
-                                </Button>
+                                            Sign in to Bookmark
+                                        </Button>
+                                    </div>
+                                ) : user.role === "recruiter" ? (
+                                    <Button
+                                        disabled
+                                        className="w-full font-semibold py-2.5 rounded-xl text-sm bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed"
+                                    >
+                                        Recruiter Account (Cannot Apply)
+                                    </Button>
+                                ) : (
+                                    <>
+                                        <Button
+                                            onClick={isApplied || isClosed ? null : applyJobHandler}
+                                            disabled={isApplied || isClosed}
+                                            className={`w-full font-semibold py-2.5 rounded-xl text-sm shadow-xs transition-all cursor-pointer ${
+                                                isClosed
+                                                    ? "bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed"
+                                                    : isApplied
+                                                        ? "bg-slate-100 text-slate-500 border border-slate-200 cursor-not-allowed"
+                                                        : "bg-indigo-600 hover:bg-indigo-700 text-white shadow-indigo-600/20"
+                                            }`}
+                                        >
+                                            {isClosed ? "Applications Closed" : isApplied ? "✓ Already Applied" : "Apply Now"}
+                                        </Button>
+
+                                        <Button
+                                            onClick={saveJobHandler}
+                                            variant="outline"
+                                            className={`w-full flex items-center justify-center gap-2 text-xs font-medium rounded-xl border-slate-200 cursor-pointer ${
+                                                isSaved 
+                                                    ? "text-indigo-600 bg-indigo-50 border-indigo-200" 
+                                                    : "text-slate-700 hover:bg-slate-50"
+                                            }`}
+                                        >
+                                            {isSaved ? (
+                                                <>
+                                                    <BookmarkCheck className="w-4 h-4 text-indigo-600" />
+                                                    Saved to Bookmarks
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <Bookmark className="w-4 h-4" />
+                                                    Save For Later
+                                                </>
+                                            )}
+                                        </Button>
+                                    </>
+                                )}
                             </div>
                             
                             {isApplied && (

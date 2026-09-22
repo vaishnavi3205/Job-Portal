@@ -218,7 +218,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
                                         value={input.email} 
                                         onChange={changeEventHandler} 
                                         className="mt-1 h-9 text-xs bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 focus:bg-white" 
-                                        placeholder="email@college.edu"
+                                        placeholder="Enter your email"
                                     />
                                 </div>
                                 <div>
@@ -230,7 +230,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
                                         value={input.phoneNumber} 
                                         onChange={changeEventHandler} 
                                         className="mt-1 h-9 text-xs bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 focus:bg-white" 
-                                        placeholder="+91 9876543210"
+                                        placeholder="Enter your phone number"
                                     />
                                 </div>
                             </div>

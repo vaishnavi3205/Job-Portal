@@ -92,7 +92,7 @@ const appRouter = createBrowserRouter([
   {
     path: "/profile",
     element: (
-      <ProtectedRoute>
+      <ProtectedRoute studentOnly={true}>
         <Suspense fallback={<PageLoader />}>
           <Profile />
         </Suspense>
